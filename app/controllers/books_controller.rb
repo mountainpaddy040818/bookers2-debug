@@ -1,7 +1,10 @@
 class BooksController < ApplicationController
-
+  before_action :ensure_correct_user,only: [:edit, :destroy, :update]
+  
   def show
     @book = Book.find(params[:id])
+    @user = @book.user
+    @book_new = Book.new
   end
 
   def index
@@ -16,6 +19,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
+      flash[:notice] = "errors prohibited this obj from being saved;"
       @books = Book.all
       render 'index'
     end
@@ -30,13 +34,15 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       redirect_to book_path(@book), notice: "You have updated book successfully."
     else
+      @books = Book.all
+      flash[:notice] = "errors prohibited this obj from being saved:"
       render "edit"
     end
   end
 
-  def delete
+  def destroy
     @book = Book.find(params[:id])
-    @book.destoy
+    @book.destroy
     redirect_to books_path
   end
 
@@ -44,5 +50,12 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:title, :body)
+  end
+
+  def ensure_correct_user
+    book = Book.find(params[:id])
+    unless book.user_id == current_user.id
+      redirect_to books_path
+    end
   end
 end
