@@ -11,12 +11,16 @@
   		<table class='table'>
   		  <tr>
           <td><%= link_to(@book.user) do %>
-            <%= image_tag @book.user.get_profile_image, size:"50x50" %><br>
+            <%= image_tag @book.user.get_profile_image, size:"100x100" %><br>
             <%= @book.user.name %>
             <% end %>
           </td>
-          <td><%= link_to @book.title, @book %></td>
-          <td><%= @book.body %></td>
+          <td>
+            <%= link_to @book.title, @book %>
+          </td>
+          <td>
+            <%= @book.body %>
+          </td>
           <% if @book.user == current_user %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success" %></td>
             <td><%= link_to 'Destroy', @book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
@@ -37,9 +41,11 @@
           <td>
             コメント数：<%= @book.book_comments.count %>
           </td>
+        </tr>
+        <tr>
             <% @book.book_comments.each do |book_comment| %>
             <td>
-              <%= image_tag book_comment.user.get_profile_image(50, 50) %>
+              <%= image_tag book_comment.user.get_profile_image, width: 100, height: 100 %>
             </td>
             <td>
               <%= book_comment.user.name %>
@@ -48,20 +54,20 @@
             </td>
             <td>
               <% if book_comment.user == current_user %>
-                <%= link_to "削除", book_book_comment_path(book_comment.book, book_comment), method: :delete %>
+                <%= link_to "destroy", book_book_comments_path(@book, @book_comment), method: :delete, class: "btn btn-danger pull-right" %>
               <% end %>
             </td>
             <% end %>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
             <td>
             <%= form_with model: [@book, @book_comment] do |f| %>
-              <%= f.text_area :comment, class: "form-control book_comment", style: "width: 100px;" %>
+              <%= f.text_area :comment, rows: "5", class: "w-100" %>
               <br>
               <%= f.submit "送信" %>
             <% end %>
             </td>
-          </tr>
+        </tr>
       </table>
     </div>
   </div>
