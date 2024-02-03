@@ -57,8 +57,8 @@
           </td>
         </tr>
       </table>
-      <%= form_with model: [@book, @book_comment] do |f| %>
-        <%= f.text_area :comment, rows: "5", cols: "55" %>
+      <%= form_with model: [@book, @book_comment], local: false do |f| %>
+        <%= f.text_area :comment, size: "55x5" %>
         <br>
         <%= f.submit "送信" %>
       <% end %>

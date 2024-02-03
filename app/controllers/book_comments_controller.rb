@@ -5,12 +5,8 @@ class BookCommentsController < ApplicationController
     @book_comment = BookComment.new(comment_params)
     @book_comment.user_id = current_user.id
     @book_comment.book_id = @book.id
-    if @book_comment.save
-      flash[:success] = "コメントが作成されました"
-      redirect_to book_path(@book.id)
-    else
-      flash[:error] = "コメントの作成に失敗しました"
-      render :show
+    unless @book_comment.save
+      render 'error'
     end
   end
 
