@@ -2,15 +2,16 @@ class Book < ApplicationRecord
   belongs_to :user
   has_one_attached :image
   has_many :favorites, dependent: :destroy
+  has_many :month_favorites, -> { where(created_at: 3.month.ago.beginning_of_day..Time.current.end_of_day) }
   has_many :book_comments, dependent: :destroy
-  
+
   validates :title,presence:true
   validates :body,presence:true,length:{maximum:200}
-  
+
   def favorited_by?(user)
     favorites.exists?(user_id: user.id)
-  end 
-  
+  end
+
   def self.search_for(content, method)
     if method == 'perfect'
       Book.where(title: content)
@@ -22,4 +23,4 @@ class Book < ApplicationRecord
       Book.where('name LIKE ?', '%' + content + '%')
     end
   end
-end 
+end
