@@ -1,4 +1,4 @@
-<h2 id="room" data-room="<%= @room.id %>" data-user="<%= current_user.id %>"><%= @user.name %> さんとのチャット</h2>
+<h2 id="room" data-room="<%= @room.id %>" data-user="<%= current_user.id %>", style="text-align: center;"><%= @user.name %> さんとのチャット</h2>
 
 <div class="message" style="width: 400px;">
   <% @chats.each do |chat| %>
@@ -17,8 +17,10 @@
   <%= render "layouts/errors", obj: @chat %>
 </div>
 
-<%= form_with model: @chat, data: {remote: true} do |f| %>
-  <%= f.text_field :message %>
-  <%= f.submit "送信", class: "btn btn-dark btn-sm" %>
-  <%= f.hidden_field :room_id %>
-<% end %>
+<div style="text-align: center;">
+  <%= form_with model: @chat, data: {remote: true} do |f| %>
+    <%= f.text_field :message %>
+    <%= f.submit "送信", class: "btn btn-dark btn-sm" %>
+    <%= f.hidden_field :room_id %>
+  <% end %>
+</div>

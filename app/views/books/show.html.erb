@@ -56,6 +56,11 @@
             コメント数：<%= @book.book_comments.count %>
           </td>
         </tr>
+        <tr>
+          <td>
+            閲覧数: <%= @book.view_count %>
+          </td>
+        </tr>
       </table>
       <%= form_with model: [@book, @book_comment], local: false do |f| %>
         <%= f.text_area :comment, size: "55x5" %>
