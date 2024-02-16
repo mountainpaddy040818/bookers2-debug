@@ -3,7 +3,14 @@ class Book < ApplicationRecord
   has_one_attached :image
   has_many :favorites, dependent: :destroy
   has_many :month_favorites, -> { where(created_at: 3.month.ago.beginning_of_day..Time.current.end_of_day) }
+  has_many :notifications, as: :notifiable, dependent: :destroy
   has_many :book_comments, dependent: :destroy
+  
+  after_create do
+    user.followers.each do |follower|
+      notifications.create(user_id: follower.id)
+    end
+  end  
 
   validates :title,presence:true
   validates :body,presence:true,length:{maximum:200}
